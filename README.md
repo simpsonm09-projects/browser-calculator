@@ -34,12 +34,16 @@ just serve
 | Command | Does |
 | --- | --- |
 | `just install` | Installs the pinned tools. |
-| `just deps` | Installs the Node dependencies with `npm ci`. |
-| `just lint` | Runs the linters. |
-| `just test` | Runs the vitest suite. |
+| `just deps` | Installs the dependencies with `bun install --frozen-lockfile`. |
+| `just fmt` / `just fmt-check` | Formats with Bun, or checks the formatting. |
+| `just lint` | Lints JavaScript and TypeScript with oxlint. |
+| `just typecheck` | Type checks the repository scripts with `bun check`. |
+| `just test` | Runs the Bun test suite. |
+| `just test-changed` | Runs only the tests the pull request diff can reach. |
 | `just coverage` | Runs the tests and writes `coverage/lcov.info`. |
-| `just spec` | Regenerates `docs/openapi.json` from the route schemas. |
-| `just verify` | Lints and tests. |
+| `just spec` / `just spec-check` | Regenerates `docs/openapi.json`, or fails when it differs. |
+| `just check` | Runs everything CI requires locally. |
+| `just agent-files` | Checks the `.agents/skills` tree and its `.claude/skills` links. |
 | `just serve` | Serves the app on port 8000. |
 | `just docker-build` | Builds the container image. |
 | `just docker-run` | Runs the container on port 8000. |

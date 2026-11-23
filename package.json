@@ -9,11 +9,7 @@
     "node": ">=26 <27"
   },
   "scripts": {
-    "start": "node src/server.js",
-    "test": "vitest run",
-    "coverage": "vitest run --coverage",
-    "spec": "node scripts/write-openapi.mjs",
-    "verify": "npm test"
+    "start": "node src/server.js"
   },
   "dependencies": {
     "@fastify/static": "^10.1.11",
@@ -21,9 +17,8 @@
     "fastify": "^5.12.8"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "^5.1.0",
-    "playwright": "1.63.0",
-    "vitest": "^5.1.0"
+    "@types/bun": "^1.4.5",
+    "playwright": "1.63.0"
   },
   "overrides": {
     "fast-uri@^3": "3.1.9",

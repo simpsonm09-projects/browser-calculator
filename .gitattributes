@@ -7,4 +7,4 @@
 
 # Generated. Keep it out of diff review and language stats.
 docs/openapi.json linguist-generated=true
-package-lock.json linguist-generated
+bun.lock linguist-generated

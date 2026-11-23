@@ -1,3 +1,10 @@
+FROM oven/bun:1.4.5-slim AS deps
+
+WORKDIR /app
+
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile --production
+
 FROM node:26-slim
 
 ENV NODE_ENV=production
@@ -6,9 +13,7 @@ WORKDIR /app
 
 RUN useradd --create-home --uid 10001 calculator
 
-COPY package.json package-lock.json ./
-RUN npm ci --omit=dev
-
+COPY --from=deps /app/node_modules ./node_modules
 COPY public ./public
 COPY src ./src
 

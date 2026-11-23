@@ -9,7 +9,7 @@ browser-calculator is a Fastify service that serves a calculator page and a cont
 
 ## Launch
 
-The driver starts the server itself on a free port, so there is nothing to launch by hand. To drive an instance that is already running instead, start it with the pinned Node and dependencies (`just deps` installs them, including Chromium):
+The driver starts the server itself on a free port, so there is nothing to launch by hand. To drive an instance that is already running instead, start it with the pinned Node and dependencies (`just deps` installs them; `bunx playwright install chromium` installs the browser):
 
 ```bash
 node src/server.js --host 127.0.0.1 --port 8010
@@ -38,13 +38,13 @@ If it is not 200, the instance is not ours or not up. The driver's own launch pa
 Run the shipped helper. With no `--base-url` it launches the server, drives the page, and stops the server it started:
 
 ```bash
-node .claude/skills/verify/scripts/drive.mjs --out artifacts/verify/calculator
+node .agents/skills/verify/scripts/drive.mjs --out artifacts/verify/calculator
 ```
 
 To target an already-running instance, pass its base URL:
 
 ```bash
-node .claude/skills/verify/scripts/drive.mjs --base-url http://127.0.0.1:8010 --out artifacts/verify/calculator
+node .agents/skills/verify/scripts/drive.mjs --base-url http://127.0.0.1:8010 --out artifacts/verify/calculator
 ```
 
 The helper drives the page with Chromium, clicks `7`, `*`, `6`, then `=`, asserts the display, submits the contact form, captures a screenshot, an ARIA snapshot, and `evidence.json`, and exits non-zero when an expected result is wrong. For the HTTP contract on its own:
