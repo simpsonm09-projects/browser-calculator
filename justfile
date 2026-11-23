@@ -45,6 +45,7 @@ test-changed:
 
 # Run the tests and write an lcov report to coverage/lcov.info.
 coverage:
+    mise exec -- bun install --frozen-lockfile
     mise exec -- bun test --coverage --coverage-reporter=lcov --coverage-dir=coverage
 
 # Regenerate docs/openapi.json from the route schemas.
@@ -58,6 +59,9 @@ spec-check:
 
 # Everything CI requires.
 check: fmt-check lint typecheck test spec-check
+
+# Historical alias for `check`, kept for the support template.
+verify: check
 
 # Install the guarded git hook.
 hooks:
