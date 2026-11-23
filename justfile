@@ -11,38 +11,65 @@ default:
 install:
     mise install
 
-# Install the Node dependencies from the lockfile.
+# Install the JavaScript dependencies from the lockfile.
 deps:
-    npm ci
+    mise exec -- bun install --frozen-lockfile
 
-# Run every linter over the tracked files.
+# Format JavaScript and TypeScript with Bun.
+fmt:
+    mise exec -- bun fmt src tests scripts public/app.js
+
+# Check JavaScript and TypeScript formatting with Bun.
+fmt-check:
+    mise exec -- bun fmt --check src tests scripts public/app.js
+
+# Type check the repository scripts with Bun.
+typecheck:
+    mise exec -- bun check
+
+# Lint JavaScript and TypeScript, through Bun with an oxlint fallback.
 lint:
-    mise exec -- flint run --full
-
-# Fix what the linters can fix.
-lint-fix:
-    mise exec -- flint run --fix
+    mise exec -- bun scripts/lint.ts
 
 # Run the AI-slop gate.
 aislop:
     npx --yes aislop@0.16.1 ci
 
-# Run the test suite. `mise run test` holds the repository test command.
+# Run the test suite.
 test:
-    mise run test
+    mise exec -- bun test
+
+# Run only the tests the pull request diff can reach.
+test-changed:
+    mise exec -- bun scripts/test-changed.ts
 
 # Run the tests and write an lcov report to coverage/lcov.info.
 coverage:
-    npm ci
-    npm run coverage
+    mise exec -- bun test --coverage --coverage-reporter=lcov --coverage-dir=coverage
 
 # Regenerate docs/openapi.json from the route schemas.
 spec:
-    node scripts/write-openapi.mjs
+    mise exec -- bun scripts/write-openapi.mjs
+
+# Fail when the generated API document differs from the code.
+spec-check:
+    mise exec -- bun scripts/write-openapi.mjs
+    git diff --exit-code -- docs/openapi.json
+
+# Everything CI requires.
+check: fmt-check lint typecheck test spec-check
+
+# Install the guarded git hook.
+hooks:
+    git config --local core.hooksPath .githooks
+
+# Check the .agents/skills tree and its .claude/skills links.
+agent-files:
+    mise exec -- bun scripts/agent-files.mjs
 
 # Serve the calculator on http://127.0.0.1:8000 without a container.
 serve:
-    mise run serve
+    mise exec -- node src/server.js --host 127.0.0.1 --port 8000
 
 # Build the container image.
 docker-build:
@@ -52,10 +79,6 @@ docker-build:
 docker-run:
     docker run --rm -p 8000:8000 browser-calculator:local
 
-# Lint and test.
-verify: lint test
-
-
 # Prune remote-tracking refs and delete local branches merged into main.
 prune:
-    node scripts/prune.mjs
+    mise exec -- bun scripts/prune.mjs
