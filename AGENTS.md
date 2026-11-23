@@ -22,6 +22,7 @@ A Fastify service and a static page that evaluate arithmetic. `repo-template` is
 - Contracts: `docs/openapi.json` is generated from the route schemas. Regenerate it with `just spec`; do not hand-edit it.
 - Docs: `docs/README.md` indexes the architecture, the calculator feature, the form feature, and the OpenAPI contract.
 - Skills: the `verify` skill lives in `.agents/skills/verify`; `.claude/skills/verify` is its relative symlink. `just agent-files` checks the pair.
+- Hooks: `just hooks` installs the shared Lefthook jobs from `simpsonm09-projects/.github` at the `hooks-v3` tag; `lefthook-local.yml` is git-ignored. Never skip a hook: no `LEFTHOOK=0`, no `--no-verify`, and never create `lefthook-local.yml` (C7.11). The ruleset is the real gate.
 
 ## Skills
 
